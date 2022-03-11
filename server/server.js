@@ -2,8 +2,12 @@ import  express  from "express";
 import cors from 'cors';
 import fs from "fs";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import csurf from "csurf";
 const morgan=require('morgan');
 require("dotenv").config();
+
+const csrfProtection=csurf({cookie : true});
 const app=express();
 
 //db
@@ -19,6 +23,7 @@ mongoose.connect(process.env.DATABASE, {
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(morgan("dev"));
 
 
@@ -26,6 +31,15 @@ app.use(morgan("dev"));
 fs.readdirSync('./routes').map((r)=>
 app.use('/api',require(`./routes/${r}`))
 );
+
+//csrf
+app.use(csrfProtection);
+
+app.get("/api/csrf-token",(req,res)=>{
+  //Req to get csrf token and we use in frotend to match this token
+  res.json({csrfToken:req.csrfToken()});
+  // console.log({csrfToken:req.csrfToken()})
+})
 
 
 
