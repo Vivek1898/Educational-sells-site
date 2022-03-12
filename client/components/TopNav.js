@@ -78,7 +78,7 @@ Router.push("/login");
       <SubMenu
       key="submenu" 
       style={{ marginLeft: 'auto' }}  
-      icon={<CoffeeOutlined/>} 
+      icon={<CoffeeOutlined/>}  
       title={user && user.name}>
     <ItemGroup>
     <Item 
