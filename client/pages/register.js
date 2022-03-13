@@ -34,6 +34,10 @@ useEffect(() => {
    // console.log("Register  User" ,data)
    toast.success('Registration SucessFull');
    setLoading(false);
+   setName('');
+   setEmail('');
+   setPassword('');
+   router.push("/login");
    }catch(err){
    toast.error(err.response.data);
    setLoading(false);
