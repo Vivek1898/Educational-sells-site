@@ -36,6 +36,10 @@ const userSchema = new Schema(
       type:String,
       default:"",
     },
+    sum:{
+      type:String,
+      default:"10",
+    },
   },
 
   { timestamps: true }

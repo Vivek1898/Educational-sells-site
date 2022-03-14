@@ -45,7 +45,7 @@ useEffect(() => {
   //  toast.success('Registration SucessFull');
   //  setLoading(false);
   //REDIRECT
-  router.push("/");
+  router.push("/user");
    }catch(err){
    toast.error(err.response.data);
    setLoading(false);
