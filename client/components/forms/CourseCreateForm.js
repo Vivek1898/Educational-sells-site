@@ -1,4 +1,4 @@
-import { Select, Button, Avatar, Image } from "antd";
+import { Select, Button, Avatar, Image,Badge } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
@@ -11,6 +11,8 @@ const CourseCreateForm = ({
   preview,
   visible,
   setVisible,
+  uploadButtonText,
+  handleImageRemove
 }) => {
   const children = [];
   for (let i = 99; i <= 2000; i+=100) {
@@ -23,7 +25,7 @@ const CourseCreateForm = ({
     <input type="text" 
     name="name" 
     className="form-control"
-    placeHolder="Name"
+    placeholder="Name"
     value={values.name}
     onChange={handleChange}/>
     
@@ -77,7 +79,7 @@ const CourseCreateForm = ({
 <input type="text" 
 name="category" 
 className="form-control"
-placeHolder="Category"
+placeholder="Category"
 value={values.category}
 onChange={handleChange}/>
 
@@ -97,7 +99,7 @@ onChange={handleChange}/>
      <div className="col ">
        <div className="form-group">
          <label className="btn btn-outline-secondary btn-block text-left" style={{ display: 'inline-block', width: '40%' }}>
-           {values.loading ? "Uploading" : "Image Upload"}
+           {uploadButtonText}
            <input
              type="file"
              name="image"
@@ -113,7 +115,9 @@ onChange={handleChange}/>
   <Button type="primary" onClick={() => setVisible(true)}   >
         show image preview
       </Button>
+      <Badge count="X" onClick={handleImageRemove} className="pointer">
       <Avatar src={preview}/>
+      </Badge>
   <Image
         width={200}
         style={{ display: 'none' }}

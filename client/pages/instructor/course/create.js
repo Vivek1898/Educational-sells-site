@@ -4,7 +4,8 @@ import InstructorRoute from "../../../components/routes/InstructorRoute";
 import { Select, Button } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import CourseCreateForm from "../../../components/forms/CourseCreateForm";
-
+import Resizer from "react-image-file-resizer";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -20,8 +21,11 @@ const CourseCreate = () => {
     loading:false,
    
   });
+  //IMAGE NAME AND VISIBLITY
+  const [image,setImage]=useState({});
   const [preview,setPreview]=useState('');
   const [visible, setVisible] = useState(false);
+  const [uploadButtonText, setUploadButtonText] = useState('Upload Image');
   //State Change
   const handleChange = e =>{
     console.log(e.target.value)
@@ -29,14 +33,51 @@ const CourseCreate = () => {
   };
   
   const handleImage = (e) => {
-    setPreview(window.URL.createObjectURL(e.target.files[0]));
+  let file=e.target.files[0];
+    setPreview(window.URL.createObjectURL(file));
+    setUploadButtonText(file.name);
+    setValues({...values,loading:true});
+//It returns callback func with image data that we compressed
+    Resizer.imageFileResizer(file,720,500,"JPEG",100,0, async (uri)=>{
+      try {
+        let {data}=await axios.post("/api/course/upload-image",{
+          image:uri,
+        });
+
+        console.log("IMAGE DATA",data);
+        setImage(data);
+        setValues({...values,loading:false});
+        
+      } catch (err) {
+        console.log(err);
+        setValues({...values,loading:false});
+        toast("Image Upload Falied Try Again  !!")
+      }
+    })
+
 
   };
+
+  const handleImageRemove = async () =>{
+    console.log("REMOVE IMAGE");
+    try {
+      setValues({...values,loading:true});
+      const res=  await axios.post('/api/course/remove-image',{image})
+      setImage({});
+      setPreview('')
+      setUploadButtonText('Upload Image')
+      setValues({...values,loading:false});
+      
+    } catch (error) {
+      console.log(error);
+      setValues({...values,loading:false});
+          toast("Image Upload Falied Try Again  !!")
+    }
+  }
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(values);
-    
   }
   
  
@@ -54,11 +95,14 @@ const CourseCreate = () => {
         preview={preview}
         visible={visible}
         setVisible={setVisible}
+        uploadButtonText={uploadButtonText}
+        handleImageRemove={handleImageRemove}
         />
         
         </div>
       <pre>{JSON.stringify(values,null,4)}</pre>
-
+<hr/>
+<pre>{JSON.stringify(image,null,4)}</pre>
 
     </InstructorRoute>
   );
