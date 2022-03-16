@@ -45,6 +45,7 @@ Router.push("/login");
 
   return (
     <Menu mode="horizontal" selectedKeys={[current]}>
+      
       <Item key="/" 
       onClick={(e)=>setCurrent(e.key)}
        icon={<AppstoreOutlined />}>
@@ -69,6 +70,20 @@ Router.push("/login");
    </Link>
  </Item>
 )}
+{user && user.role && user.role.includes("Instructor") && (
+  <Item key="/instructor" 
+  onClick={(e)=>setCurrent(e.key)}
+  icon={<TeamOutlined />}
+  className="float-left"
+  
+  >
+   <Link href="/instructor">
+     <a>Instructor</a>
+   </Link>
+ </Item>
+) }
+
+
 
       {user === null && (
         <>
@@ -91,8 +106,9 @@ Router.push("/login");
 
         </>
       )}
-
+        
       {user !== null  &&
+      
       <SubMenu
       key="submenu" 
       style={{ marginLeft: 'auto' }}  
@@ -119,9 +135,14 @@ Router.push("/login");
 
   
       </SubMenu>
+      
     
      }
 
+
+
+    
+  
     </Menu>
   );
 };

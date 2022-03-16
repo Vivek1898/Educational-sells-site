@@ -4,6 +4,7 @@ import UserRoute from "../../components/routes/UserRoute";
 
 //Only for logged Seesion
 //Protected Route
+//User Route --> USER NAV--> AND WE ARE PASSING CHILDREN FOR USER ROUTE
 const UserIndex = () =>{
     const {state:user}=useContext(Context);
 
