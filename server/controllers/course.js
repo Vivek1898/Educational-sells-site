@@ -72,4 +72,8 @@ export const removeImage =async (req,res) => {
     } catch (error) {
         console.log(error);
     }
+};
+
+export const create = async (req,res) =>{
+  console.log("Create Course ")
 }

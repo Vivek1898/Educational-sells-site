@@ -6,6 +6,8 @@ import { SaveOutlined } from "@ant-design/icons";
 import CourseCreateForm from "../../../components/forms/CourseCreateForm";
 import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+
 
 const { Option } = Select;
 
@@ -21,6 +23,8 @@ const CourseCreate = () => {
     loading:false,
    
   });
+  const router=useRouter();
+
   //IMAGE NAME AND VISIBLITY
   const [image,setImage]=useState({});
   const [preview,setPreview]=useState('');
@@ -77,7 +81,20 @@ const CourseCreate = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    // console.log(values);
+   try {
+     
+    const {data} = await axios.post('/api/course',{
+      ...values,image
+    });
+
+    toast("Now you Can Start Adding Lesson");
+    router.push("/instructor");
+
+   } catch (error) {
+     toast(err.response.data);
+     console.log(error);
+   }
   }
   
  

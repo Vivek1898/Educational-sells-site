@@ -2,17 +2,22 @@ import  express  from "express";
 
 const router =express.Router();
 //Middleware ->give current user
-import { requireSignin } from "../middlewares";
+import { requireSignin ,isInstructor } from "../middlewares";
 
 
 //controllers
 import {
      uploadImage ,
-     removeImage
+     removeImage,
+     create
 } from '../controllers/course'
 
 router.post('/course/upload-image',uploadImage);
 router.post('/course/remove-image',removeImage);
+
+//course
+
+router.post('/course',requireSignin,isInstructor,create);
 
 
 module.exports = router;

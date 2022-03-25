@@ -7,11 +7,15 @@ import UserRoute from "../../components/routes/UserRoute";
 //User Route --> USER NAV--> AND WE ARE PASSING CHILDREN FOR USER ROUTE
 const UserIndex = () =>{
     const {state:user}=useContext(Context);
+    // console.log(user.user.name)
 
     return (
         <UserRoute>
         <h1 className="jumbotron text-center bg-primary square">User DashBoard</h1> 
+        {/* <li>{user.user.name}</li> */}
+
       <pre>{JSON.stringify(user,null,4)}</pre>
+
 
         </UserRoute>
       
