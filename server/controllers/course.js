@@ -1,6 +1,7 @@
 import AWS from "aws-sdk"
 import { nanoid } from "nanoid";
-
+import Course from "../models/course";
+import slugify from "slugify";
 const awsConfig={
     accessKeyId: process.env.AWS_ACESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECTRET_ACESS_KEY,
@@ -74,6 +75,35 @@ export const removeImage =async (req,res) => {
     }
 };
 
+// slug is the unique identifier for the course
+// we will use slug to create the course
+// any empty space in the title will be replaced by -
 export const create = async (req,res) =>{
-  console.log("Create Course ")
+  //  console.log("Create Course ",req.body)
+  //  return;
+  try{
+    const alreadyExist = await Course.findOne({
+      slug:slugify(req.body.name.toLowerCase()),
+    }).exec();
+
+    if(alreadyExist){
+      return res.status(400).send("Course Title already exist");
+    }
+   // const {name,description,price,category,uploading,loading, paid,instructor,lessons} = req.body;
+    const course = await new Course({
+      slug:slugify(req.body.name),
+      instructor:req.user._id,
+     ...req.body
+    }).save();
+    res.json(course);
+  } catch(err){
+    console.log(err);
+    return res.status(400).send("Create Course Failed");
+  }
+}
+export const read = async (req,res) =>{
+  let course = await Course.findOne({slug:req.params.slug})
+  .populate("instructor","_id name")
+  .exec();
+  res.json(course);
 }

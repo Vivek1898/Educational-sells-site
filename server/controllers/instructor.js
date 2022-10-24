@@ -1,7 +1,7 @@
 import User from "../models/user"
 import queryString from  "query-string"
 const stripe =require("stripe")(process.env.STRIPE_SECRET);
-
+import Course from "../models/course"
 export const makeInstructor = async (req,res) =>{
    try{
         //Logic
@@ -87,3 +87,15 @@ export const getAccountStatus = async (req,res) =>{
     console.log(err);
    }
  }
+
+// fetch all courses for current instructor
+ export const instructorCourses = async (req,res) =>{
+    try {
+      let courses = await Course.find({instructor:req.user._id})
+      .sort({createdAt:-1})
+      .exec();
+      res.json(courses);
+    } catch (err) {
+      console.log(err);
+    }
+  }

@@ -92,7 +92,7 @@ const CourseCreate = () => {
     router.push("/instructor");
 
    } catch (error) {
-     toast(err.response.data);
+     toast(error.response.data);
      console.log(error);
    }
   }
